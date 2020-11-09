@@ -65,7 +65,7 @@ collect_replies(0,Dict)->
 collect_replies(N,Dict) ->
     receive
 	{Key,Value}->
-	    io:format("~p~n",[{?MODULE,?LINE,Key,Value}]),
+%	    io:format("~p~n",[{?MODULE,?LINE,Key,Value}]),
 	    case dict:is_key(Key,Dict) of
 		true->
 		    Dict1=dict:append(Key,Value,Dict),
