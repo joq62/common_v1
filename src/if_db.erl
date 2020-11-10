@@ -29,6 +29,111 @@
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
+passwd_create({db_passwd,UserId,PassWd})->
+    passwd_create(UserId,PassWd).
+passwd_create(UserId,PassWd)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_passwd,create,[UserId,PassWd],5000).
+
+passwd_read_all()->
+ {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_passwd,read_all,[],5000).
+
+passwd_read(UserId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_passwd,read,[UserId],5000).
+
+passwd_update(UserId,NewPwd)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_passwd,update,[UserId,NewPwd],5000).
+
+passwd_delete(UserId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_passwd,delete,[UserId],5000).
+
+
+% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
+service_def_create({db_service_def,ServiceId,Vsn,GitUserId})->
+    service_def_create(ServiceId,Vsn,GitUserId).
+service_def_create(ServiceId,Vsn,GitUserId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_service_def,create,[ServiceId,Vsn,GitUserId],5000).
+
+service_def_read_all()->
+ {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_service_def,read_all,[],5000).
+
+service_def_read(ServiceId,Vsn)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_service_def,read,[ServiceId,Vsn],5000).
+
+service_def_update(Id,Vsn,NewVsn,NewSource)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_service_def,update,[Id,Vsn,NewVsn,NewSource],5000).
+
+service_def_delete(Id,Vsn)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_service_def,delete,[Id,Vsn],5000).
+
+% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
+sd_create({db_sd,ServiceId,Vsn,HostId,VmId,Vm})->
+    sd_create(ServiceId,Vsn,HostId,VmId,Vm).
+sd_create(ServiceId,Vsn,HostId,VmId,Vm)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,create,[ServiceId,Vsn,HostId,VmId,Vm],5000).
+
+sd_read(ServiceId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,read,[ServiceId],5000).
+sd_read(ServiceId,Vsn)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,read,[ServiceId,Vsn],5000).
+
+sd_get(ServiceId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,get,[ServiceId],5000).
+sd_get(ServiceId,Vsn)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,get,[ServiceId,Vsn],5000).
+
+sd_read_all()->
+ {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,read_all,[],5000).
+
+sd_delete(ServiceId,Vsn,Vm)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_sd,delete,[ServiceId,Vsn,Vm],5000).
+
+% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
 deployment_spec_create({db_deployment_spec,DeplId,SpecId,Vsn,Date,Time,SdList})->
     deployment_spec_create(DeplId,SpecId,Vsn,Date,Time,SdList).
 deployment_spec_create(DeplId,SpecId,Vsn,Date,Time,SdList)->
@@ -56,12 +161,12 @@ deployment_spec_delete(SpecId,Vsn)->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-deployment_create({db_deployment,DeplId,SpecId,Vsn,Date,Time,SdList})->
-    deployment_create(DeplId,SpecId,Vsn,Date,Time,SdList).
-deployment_create(DeplId,SpecId,Vsn,Date,Time,SdList)->
+deployment_create({db_deployment,DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status})->
+    deployment_create(DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status).
+deployment_create(DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status)->
     {ok,DbaseHostId}=inet:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
-    rpc:call(DbaseVm,db_deployment,create,[DeplId,SpecId,Vsn,Date,Time,SdList],5000).
+    rpc:call(DbaseVm,db_deployment,create,[DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status],5000).
 
 deployment_read_all()->
  {ok,DbaseHostId}=inet:gethostname(),
@@ -72,6 +177,11 @@ deployment_read(DeplId)->
     {ok,DbaseHostId}=inet:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
     rpc:call(DbaseVm,db_deployment,read,[DeplId],5000).
+
+deployment_update_status(DeplId,NewStatus)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_deployment,update_status,[DeplId,NewStatus],5000).
 
 deployment_delete(DeplId)->
     {ok,DbaseHostId}=inet:gethostname(),
