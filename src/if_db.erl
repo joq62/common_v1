@@ -242,6 +242,12 @@ computer_read(HostId)->
     {ok,DbaseHostId}=inet:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
     rpc:call(DbaseVm,db_computer,read,[HostId],5000).
+
+computer_update(HostId,NewStatus)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_computer,update,[HostId,NewStatus],5000).
+
 computer_delete(HostId)->
     {ok,DbaseHostId}=inet:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
@@ -251,3 +257,47 @@ computer_delete(HostId)->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
+vm_info(Vm)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,info,[Vm],5000).
+
+vm_host_id(HostId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,host_id,[HostId],5000).
+
+vm_type(Type)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,type,[Type],5000).
+
+vm_status(Status)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,status,[Status],5000).
+
+vm_create({db_vm,HostId,SshId,SshPwd,IpAddr,Port,Status})->
+    vm_create(HostId,SshId,SshPwd,IpAddr,Port,Status).
+vm_create(HostId,SshId,SshPwd,IpAddr,Port,Status)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,create,[HostId,SshId,SshPwd,IpAddr,Port,Status],5000).
+vm_read_all()->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,read_all,[],5000).
+vm_read(HostId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,read,[HostId],5000).
+
+vm_update(Vm,NewStatus)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,update,[Vm,NewStatus],5000).
+
+vm_delete(HostId)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_vm,delete,[HostId],5000).
