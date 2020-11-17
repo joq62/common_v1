@@ -178,6 +178,13 @@ deployment_read(DeplId)->
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
     rpc:call(DbaseVm,db_deployment,read,[DeplId],5000).
 
+
+
+deployment_status(Status)->
+    {ok,DbaseHostId}=inet:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
+    rpc:call(DbaseVm,db_deployment,status,[Status],5000).
+
 deployment_update_status(DeplId,NewStatus)->
     {ok,DbaseHostId}=inet:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++DbaseHostId),
