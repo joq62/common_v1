@@ -7,12 +7,8 @@ doc_gen:
 	erl -s doc_gen start -sname doc
 
 test:
-	rm -rf  *_service include logfiles app_config node_config latest.log;
 	rm -rf *.beam src/*.beam test_src/*.beam ebin/* test_ebin/* erl_crash.dump;
-#	include
-	git clone https://github.com/joq62/include.git;
 	cp src/*app ebin;
-	erlc -I include -o ebin src/*.erl;
-	erlc -I include -o test_ebin test_src/*.erl;
-	erl -config test.config -pa ebin -sname node1 -detached
-	erl -config test.config -pa ebin -pa */ebin -pa test_ebin -s sd_service_tests start -sname sd_test
+	erlc -o ebin src/*.erl;
+	erlc -o test_ebin test_src/*.erl;
+	erl -pa test_ebin -pa ebin -s common_tests start -sname common_test

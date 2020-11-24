@@ -31,7 +31,8 @@ ssh_send(Ip,Port,User,Password,Msg,TimeOut)->
     Reply.
 
 ssh_connect(Ip,Port,User,Password,TimeOut)->
-    Result=case ssh:connect(Ip,Port,[{user,User},{password,Password}],TimeOut) of
+    Result=case ssh:connect(Ip,Port,[{user,User},{password,Password},
+				     {silently_accept_hosts, true} ],TimeOut) of
 	       {error,Err}->
 		   {error,Err};
 	       {ok,ConRef}->
