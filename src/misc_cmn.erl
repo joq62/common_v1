@@ -22,27 +22,36 @@
 %% External functions
 %% ====================================================================
 
+%% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
 
+%% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
+delete_worker(Vm,VmDir)->
+    rpc:call(Vm,file,delete_dir_r,VmDir),
+    rpc:call(Vm,init,stop,[]),
+    timer:sleep(200).
+%% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
 create_worker(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,StartFun,GitPath)->
     {ok,Vm}=create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie),
     create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath),
     {ok,Vm}.
 
-
-
 create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath)->
-
-  %  ?assertEqual("1.0.0",Vsn),
     AppDir=string:concat(AppId,vsn_to_string(Vsn)),
     GitDest=filename:join(VmDir,AppDir),
     CodePath=filename:join([VmDir,AppDir,"ebin"]),
     AppModule=list_to_atom(AppId),
-
-    %Test
-  %  ?assertEqual("dbase_application100",AppDir),
-  %  ?assertEqual("databases/dbase_application100", GitDest),
-  %  ?assertEqual("databases/dbase_application100/ebin",CodePath),
-  %  ?assertEqual(dbase_application,AppModule),
 
     true=vm_started(Vm),
     rpc:call(Vm,file,del_dir_r,[GitDest],3000),
@@ -59,8 +68,6 @@ create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath)->
 create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,StartFun,GitPath)->
     {ok,Vm}=create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie),
     create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath).
-
-
 
 create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie)->
     Vm=list_to_atom(VmId++"@"++HostId),
