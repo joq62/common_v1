@@ -35,7 +35,7 @@
 %% --------------------------------------------------------------------
 
 % OaM related
--export([]).
+-export([boot/0]).
 
 -export([start/0,
 	 stop/0,
@@ -52,7 +52,8 @@
 
 %% Asynchrounus Signals
 
-
+boot()->
+    application:start(?MODULE).
 
 %% Gen server functions
 
