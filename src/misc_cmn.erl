@@ -47,7 +47,7 @@ create_worker(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,StartFun,Gi
     create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath),
     {ok,Vm}.
 
-create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath)->
+create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath)->
     AppDir=string:concat(AppId,vsn_to_string(Vsn)),
     GitDest=filename:join(VmDir,AppDir),
     CodePath=filename:join([VmDir,AppDir,"ebin"]),
@@ -57,7 +57,7 @@ create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath)->
     rpc:call(Vm,file,del_dir_r,[GitDest],3000),
     rpc:call(Vm,os,cmd,["git clone "++GitPath++" "++GitDest],10*1000),
     true=rpc:call(Vm,code,add_patha,[CodePath],3000),
-    ?assertEqual(ok,rpc:call(Vm,AppModule,StartFun,[],3000)),
+    ?assertEqual(ok,rpc:call(Vm,M,F,A,3000)),
     {pong,_,AppModule}=rpc:call(Vm,AppModule,ping,[],3000),
     ok.
 
