@@ -2,7 +2,7 @@
 %% application.
 {application, common,
 [{description, "common" },
-{vsn, "0.0.1" },
+{vsn, "1.0.0" },
 {modules, 
 	  [common_app,common_sup,common]},
 {registered,[common]},

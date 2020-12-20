@@ -1,0 +1,14 @@
+-module(misc_common).
+-export([vsn_to_string/1,
+	 vm_started/1
+	]).
+
+-author('joq erlang').
+
+-define(DELAY,2000).
+
+
+
+
+
+

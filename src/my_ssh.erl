@@ -41,7 +41,9 @@ ssh_connect(Ip,Port,User,Password,TimeOut)->
 			   {error,Err};
 		       {ok,ChanId}->
 			   {ok,ConRef,ChanId}
-		   end
+		   end;
+	       Err2 ->
+		   {error,[Err2]}
 	   end,
     Result.
 

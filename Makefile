@@ -1,6 +1,7 @@
 all:
 	rm -rf  ebin/* test_ebin/* src/*~ test_src/*~ *~ erl_crash.dump src/*.beam test_src/*.beam;
 	cp src/*.app ebin;
+	erlc -o ebin src/*.erl
 doc_gen:
 	rm -rf  node_config logfiles doc/*;
 	erlc ../doc_gen.erl;

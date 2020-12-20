@@ -79,7 +79,6 @@ collect_replies(N,Dict) ->
     end.
 	    
 do_job(ReducePid, F, X)->
-%    io:format("~p~n",[{?MODULE,?LINE,F,X}]),
     F(ReducePid,X).
 
 
