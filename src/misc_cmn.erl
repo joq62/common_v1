@@ -51,8 +51,7 @@ create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath)->
     AppDir=string:concat(AppId,vsn_to_string(Vsn)),
     GitDest=filename:join(VmDir,AppDir),
     CodePath=filename:join([VmDir,AppDir,"ebin"]),
-    AppModule=list_to_atom(AppId),
-
+    [AppModule]=A,
     true=vm_started(Vm),
     rpc:call(Vm,file,del_dir_r,[GitDest],3000),
     rpc:call(Vm,os,cmd,["git clone "++GitPath++" "++GitDest],10*1000),
