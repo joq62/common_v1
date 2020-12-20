@@ -42,9 +42,9 @@ delete_worker(Vm,VmDir)->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-create_worker(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,StartFun,GitPath)->
+create_worker(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,{M,F,A},GitPath)->
     {ok,Vm}=create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie),
-    create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath),
+    create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath),
     {ok,Vm}.
 
 create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath)->
@@ -65,9 +65,9 @@ create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath)->
 %%   vm related functionality
 %%--------------------------------------------------------------------
 
-create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,StartFun,GitPath)->
+create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie,VmDir,AppId,Vsn,{M,F,A},GitPath)->
     {ok,Vm}=create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie),
-    create_service(Vm,VmDir,AppId,Vsn,StartFun,GitPath).
+    create_service(Vm,VmDir,AppId,Vsn,{M,F,A},GitPath).
 
 create_vm(User,PassWd,Ip,Port,HostId,VmId,Cookie)->
     Vm=list_to_atom(VmId++"@"++HostId),
