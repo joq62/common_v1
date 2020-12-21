@@ -34,8 +34,8 @@
 %% Returns: non
 %% --------------------------------------------------------------------
 delete_worker(Vm,VmDir)->
-    rpc:call(Vm,file,delete_dir_r,VmDir),
-    rpc:call(Vm,init,stop,[]),
+    ok=rpc:call(Vm,file,del_dir_r,[VmDir]),
+    ok=rpc:call(Vm,init,stop,[]),
     timer:sleep(200).
 %% --------------------------------------------------------------------
 %% Function:start/0 
