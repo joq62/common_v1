@@ -23,6 +23,38 @@
 %% ====================================================================
 %% External functions
 %% ====================================================================
+% --------------------------------------------------------------------
+%% Function:start/0 
+%% Description: Initiate the eunit tests, set upp needed processes etc
+%% Returns: non
+%% --------------------------------------------------------------------
+app_spec_create({db_app_spec,AppId,Vsn,Services})->
+    app_spec_create(AppId,Vsn,Services).
+app_spec_create(AppId,Vsn,Services)->
+    {ok,LocalHostId}=net:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
+    rpc:call(DbaseVm,db_app_spec,create,[AppId,Vsn,Services],5000).
+
+app_spec_read_all()->
+ {ok,LocalHostId}=net:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
+    rpc:call(DbaseVm,db_app_spec,read_all,[],5000).
+
+app_spec_read(AppId)->
+    {ok,LocalHostId}=net:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
+    rpc:call(DbaseVm,db_app_spec,read,[AppId],5000).
+
+app_spec_read(AppId,Vsn)->
+    {ok,LocalHostId}=net:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
+    rpc:call(DbaseVm,db_app_spec,read,[AppId,Vsn],5000).
+
+app_spec_delete(AppId,Vsn)->
+    {ok,LocalHostId}=net:gethostname(),
+    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
+    rpc:call(DbaseVm,db_app_spec,delete,[AppId,Vsn],5000).
+
 
 % --------------------------------------------------------------------
 %% Function:start/0 
@@ -161,39 +193,33 @@ deployment_spec_delete(SpecId,Vsn)->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-deployment_create({db_deployment,DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status})->
-    deployment_create(DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status).
-deployment_create(DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status)->
+deployment_create({db_deployment,DepSpecId,DepSpecVsn,Date,Time,StartResult})->
+    deployment_create(DepSpecId,DepSpecVsn,Date,Time,StartResult).
+deployment_create(DepSpecId,DepSpecVsn,Date,Time,StartResult)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_deployment,create,[DeplId,SpecId,Vsn,Date,Time,HostId,VmId,SdList,Status],5000).
+    rpc:call(DbaseVm,db_deployment,create,[DepSpecId,DepSpecVsn,Date,Time,StartResult],5000).
 
 deployment_read_all()->
  {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
     rpc:call(DbaseVm,db_deployment,read_all,[],5000).
 
-deployment_read(DeplId)->
+deployment_read(DepSpecId,DepSpecVsn)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_deployment,read,[DeplId],5000).
+    rpc:call(DbaseVm,db_deployment,read,[DepSpecId,DepSpecVsn],5000).
 
 
-
-deployment_status(Status)->
+deployment_update_status(DepSpecId,DepSpecVsn,NewStartResult)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_deployment,status,[Status],5000).
+    rpc:call(DbaseVm,db_deployment,update_status,[DepSpecId,DepSpecVsn,NewStartResult],5000).
 
-deployment_update_status(DeplId,NewStatus)->
+deployment_delete(DepSpecId,DepSpecVsn)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_deployment,update_status,[DeplId,NewStatus],5000).
-
-deployment_delete(DeplId)->
-    {ok,LocalHostId}=net:gethostname(),
-    DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_deployment,delete,[DeplId],5000).
+    rpc:call(DbaseVm,db_deployment,delete,[DepSpecId,DepSpecVsn],5000).
 % --------------------------------------------------------------------
 %% Function:start/0 
 %% Description: Initiate the eunit tests, set upp needed processes etc

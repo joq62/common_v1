@@ -9,6 +9,7 @@
 
 -export([create/4,create/5,
 	 delete/2,
+	 vm_started/1,
 	 stop_vm/2
 	]).
 
@@ -75,12 +76,20 @@ create(HostId,VmId,VmDir,Cookie,PreLoadedServices)->
     Result=case create(HostId,VmId,VmDir,Cookie) of
 	       {error,Err}->
 		   {error,Err};
-	       {ok,_}->
+	       {ok,CreatedVm}->
 		   ServiceInfo=lists:append([if_db:service_def_read(ZServiceId,ZServiceVsn)||
 						{ZServiceId,ZServiceVsn}<-PreLoadedServices]),
-		   StartResult=[{misc_cmn:create_service(Vm,XVmDir,ServiceId,ServiceVsn,StartMFA,GitPath),ServiceId,ServiceVsn}||
-		       {Vm,XVmDir,ServiceId,ServiceVsn,StartMFA,GitPath}<-ServiceInfo],
-		   StartResult
+		   io:format("ServiceInfo = ~p~n",[ServiceInfo]),
+		   StartResult=[{service:create(CreatedVm,VmDir,ServiceId,ServiceVsn,StartMFA,GitPath),ServiceId,ServiceVsn}||
+		       {ServiceId,ServiceVsn,StartMFA,GitPath}<-ServiceInfo],
+		   io:format("StartResult = ~p~n",[StartResult]),
+		   case [{StartCode,ServiceId,ServiceVsn}||{StartCode,ServiceId,ServiceVsn}<-StartResult,StartCode/=ok] of
+		       []->
+			   {ok,CreatedVm};
+		       StartError->
+			   delete(CreatedVm,VmDir),
+			   {error,[start_error,StartError,?MODULE,?LINE]}
+		   end
 	   end,
     Result.
 
@@ -96,7 +105,13 @@ create_vm(User,PassWd,Ip,Port,HostId,VmId,VmDir,Cookie)->
 		      true->
 			  case rpc:call(Vm,filelib,is_dir,[VmDir],3000) of
 			      false->
-				  ok;
+				  case rpc:call(Vm,file,make_dir,[VmDir],3000) of
+				      ok->
+					  {ok,Vm};
+				      {error,Reason} ->
+					  stop_vm(Vm),
+					  {error,Reason}
+				  end;
 			      true ->
 				  case rpc:call(Vm,file,del_dir_r,[VmDir],3000) of
 				      ok->
