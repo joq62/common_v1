@@ -75,7 +75,8 @@ collect_replies(N,Dict) ->
 		    Dict1=dict:store(Key,[Value],Dict),
 		    collect_replies(N,Dict1)
 		end;
-	{'EXIT',_,_Why} ->
+	{'EXIT',_,Why} ->
+	    io:format("~p~n",[{?MODULE,?LINE,Why,Dict}]),
 	    collect_replies(N-1,Dict)
     end.
 	    
