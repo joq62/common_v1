@@ -17,7 +17,7 @@
 %% --------------------------------------------------------------------
 -compile(export_all).
 
--define(DbaseVmId,"10250").
+-define(DbaseVmId,"server").
 
 
 %% ====================================================================
@@ -257,34 +257,34 @@ log_delete(Vm,Module,Line,Severity,Date,Time,Text)->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-computer_status(Status)->
+server_status(Status)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,status,[Status],5000).
-computer_create({db_computer,HostId,SshId,SshPwd,IpAddr,Port,Status})->
-    computer_create(HostId,SshId,SshPwd,IpAddr,Port,Status).
-computer_create(HostId,SshId,SshPwd,IpAddr,Port,Status)->
+    rpc:call(DbaseVm,db_server,status,[Status],5000).
+server_create({db_server,HostId,SshId,SshPwd,IpAddr,Port,Status})->
+    server_create(HostId,SshId,SshPwd,IpAddr,Port,Status).
+server_create(HostId,SshId,SshPwd,IpAddr,Port,Status)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,create,[HostId,SshId,SshPwd,IpAddr,Port,Status],5000).
-computer_read_all()->
+    rpc:call(DbaseVm,db_server,create,[HostId,SshId,SshPwd,IpAddr,Port,Status],5000).
+server_read_all()->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,read_all,[],5000).
-computer_read(HostId)->
+    rpc:call(DbaseVm,db_server,read_all,[],5000).
+server_read(HostId)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,read,[HostId],5000).
+    rpc:call(DbaseVm,db_server,read,[HostId],5000).
 
-computer_update(HostId,NewStatus)->
+server_update(HostId,NewStatus)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,update,[HostId,NewStatus],5000).
+    rpc:call(DbaseVm,db_server,update,[HostId,NewStatus],5000).
 
-computer_delete(HostId)->
+server_delete(HostId)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_computer,delete,[HostId],5000).
+    rpc:call(DbaseVm,db_server,delete,[HostId],5000).
 % --------------------------------------------------------------------
 %% Function:start/0 
 %% Description: Initiate the eunit tests, set upp needed processes etc
