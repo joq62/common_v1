@@ -53,10 +53,10 @@ reduce(Parent,F1,F2,Acc0,L)->
 				       do_job(ReducePid,F1,X) end)
 	    end, L),
     N=length(L),
- %   io:format("~p~n",[{?MODULE,?LINE,N}]),
+    io:format("~p~n",[{?MODULE,?LINE,N}]),
     Dict0=dict:new(),
     Dict1=collect_replies(N,Dict0),
- %   io:format("~p~n",[{?MODULE,?LINE,Dict1}]),
+    io:format("~p~n",[{?MODULE,?LINE,Dict1}]),
     Acc = dict:fold(F2, Acc0,Dict1),
     Parent!{self(),Acc}.
 
@@ -65,7 +65,7 @@ collect_replies(0,Dict)->
 collect_replies(N,Dict) ->
     receive
 	{Key,Value}->
-%	    io:format("~p~n",[{?MODULE,?LINE,Key,Value}]),
+	    io:format("~p~n",[{?MODULE,?LINE,Key,Value}]),
 	    case dict:is_key(Key,Dict) of
 		true->
 		    Dict1=dict:append(Key,Value,Dict),
