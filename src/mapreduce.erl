@@ -63,6 +63,7 @@ reduce(Parent,F1,F2,Acc0,L)->
 collect_replies(0,Dict)->
     Dict;
 collect_replies(N,Dict) ->
+    io:format("N= ~p~n",[{?MODULE,?LINE,N}]),
     receive
 	{Key,Value}->
 	    io:format("~p~n",[{?MODULE,?LINE,Key,Value}]),
