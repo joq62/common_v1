@@ -28,12 +28,12 @@
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-app_spec_create({db_app_spec,AppId,Vsn,Services})->
-    app_spec_create(AppId,Vsn,Services).
-app_spec_create(AppId,Vsn,Services)->
+app_spec_create({db_app_spec,AppId,Vsn,Directives,Services})->
+    app_spec_create(AppId,Vsn,Directives,Services).
+app_spec_create(AppId,Vsn,Directives,Services)->
     {ok,LocalHostId}=net:gethostname(),
     DbaseVm=list_to_atom(?DbaseVmId++"@"++LocalHostId),
-    rpc:call(DbaseVm,db_app_spec,create,[AppId,Vsn,Services],5000).
+    rpc:call(DbaseVm,db_app_spec,create,[AppId,Vsn,Directives,Services],5000).
 
 app_spec_read_all()->
  {ok,LocalHostId}=net:gethostname(),
